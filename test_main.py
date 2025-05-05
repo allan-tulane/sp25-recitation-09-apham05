@@ -1,4 +1,4 @@
-from main import *
+from main import mst_from_points, prim
 
 def test_mst_from_points():
     points = [('a', 5, 10), #(city_name, x-coord, y-coord)

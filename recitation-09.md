@@ -9,7 +9,6 @@ In this lab we'll investigate minimum spanning tree algorithms.
 .  
 .  
 
-
 2. What is the worst-case work of your algorithm, assuming $G$ has $k$ connected components?
 
 **put in answers.md**

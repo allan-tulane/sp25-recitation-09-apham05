@@ -31,13 +31,19 @@ def prim(graph):
                 return prim_helper(visited, frontier, tree)
         
     # pick first node as source arbitrarily
-    source = list(graph.keys())[0]
-    frontier = []
-    heappush(frontier, (0, source, source))
-    visited = set()  # store the visited nodes (don't need distance anymore)
-    tree = set()
-    prim_helper(visited, frontier, tree)
-    return tree
+    all_trees = []
+    visited = set()
+    for node in graph:
+        if node not in visited:
+            tree = set()
+            frontier = []
+            heappush(frontier, (0, node, None))
+            tree = set()
+            prim_helper(visited, frontier, tree)
+            all_trees.append(tree)
+            
+    return all_trees
+
 
 def test_prim():    
     graph = {
@@ -82,7 +88,35 @@ def mst_from_points(points):
       tree connecting the cities in the input.
     """
     ###TODO
-    pass
+    graph = defaultdict(set)
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            city1 = points[i][0]
+            city2 = points[j][0]
+            dist = euclidean_distance(points[i], points[j])
+            graph[city1].add((city2, dist))
+            graph[city2].add((city1, dist))
+
+    visited = set()
+    frontier = []
+    tree = set()
+
+    start = points[0][0]
+    heappush(frontier, (0, start, None))
+
+    while frontier:
+        weight, node, parent = heappop(frontier)
+        if node in visited:
+            continue
+        visited.add(node)
+        if parent is not None:
+            tree.add((weight, node, parent))
+        for neighbor, w in graph[node]:
+            if neighbor not in visited:
+                heappush(frontier, (w, neighbor, node))
+
+    return list(tree)
+    #pass
 
 def euclidean_distance(p1, p2):
     return sqrt((p1[1] - p2[1])**2 + (p1[2] - p2[2])**2)
